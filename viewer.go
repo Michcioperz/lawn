@@ -21,7 +21,12 @@ var printAllTpl = template.Must(template.New("main").Parse(`
     <style>
       body {
         background-color: #4F4040;
+      }
+      body, a:link {
         color: #EDD3D3;
+      }
+      a:visited {
+        color: #C2ADAD;
       }
       .container {
         width: 90%;
