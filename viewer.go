@@ -126,7 +126,7 @@ func FeedAll(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-  fmt.Fprintln(w, `<?xml version="1.0" encoding="utf-8" ?>`)
+	fmt.Fprintln(w, `<?xml version="1.0" encoding="utf-8" ?>`)
 	log.Print(rssTemplate.Execute(w, links))
 }
 
