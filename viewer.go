@@ -28,7 +28,7 @@ var printAllTpl = template.Must(template.New("main").Parse(`
       <main>
         <ul>
           {{ range . }}
-          <li><a href="{{ .Url }}">{{ .Title }} <small>{{ .ParsedUrl.Hostname() }}</small></a> {{ .Description }}</li>
+          <li><a href="{{ .Url }}">{{ .Title }} <small>{{ .ParsedUrl.Hostname }}</small></a> {{ .Description }}</li>
           {{ end }}
         </ul>
       </main>
