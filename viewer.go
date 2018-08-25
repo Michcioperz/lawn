@@ -39,7 +39,7 @@ var printAllTpl = template.Must(template.New("main").Parse(`
 
 func init() {
 	var err error
-	printAllQuery, err = db.Prepare("SELECT url, title, description, inserted_at FROM links")
+	printAllQuery, err = db.Prepare("SELECT url, title, description, inserted_at FROM links ORDER BY inserted_at DESC")
 	if err != nil {
 		log.Fatal("unprepared statement for printAll: ", err)
 	}
