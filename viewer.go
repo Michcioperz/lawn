@@ -72,7 +72,7 @@ var rssTemplate = template.Must(template.New("feed").Parse(`
     <link href="{{ .Url }}" />
     <id>{{ .Url }}</id>
     <updated>{{ .InsertedAtISO }}</updated>
-    <summary>{{ .Description }}</title>
+    <summary>{{ .Description }}</summary>
   </entry>
   {{ end }}
 </feed>
