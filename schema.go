@@ -12,3 +12,7 @@ type Link struct {
 	InsertedAt  time.Time
 	ParsedUrl   *url.URL
 }
+
+func (l Link) InsertedAtISO() string {
+	return l.InsertedAt.Format(time.RFC3339)
+}

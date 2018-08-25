@@ -58,6 +58,27 @@ var printAllTpl = template.Must(template.New("main").Parse(`
 </html>
 `))
 
+var rssTemplate = template.Must(template.New("feed").Parse(`
+<?xml version="1.0" encoding="utf-8" ?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Lawn</title>
+  <subtitle>a primitive bookmarking solution</subtitle>
+  <link href="https://lawn.meekchopp.es/feed.atom" rel="self" />
+  <link href="https://lawn.meekchopp.es/" rel="alternate" type="text/html" />
+  <id>https://lawn.meekchopp.es/feed.atom</id>
+  <updated>{{ if . }}{{ with $first := index . 0 }}{{ $first.InsertedAtISO }}{{ end }}{{ end }}</updated>
+  {{ range . }}
+  <entry>
+    <title>{{ .Title }}</title>
+    <link href="{{ .Url }}" />
+    <id>{{ .Url }}</id>
+    <updated>{{ .InsertedAtISO }}</updated>
+    <summary>{{ .Description }}</title>
+  </entry>
+  {{ end }
+</feed>
+`))
+
 func init() {
 	var err error
 	printAllQuery, err = db.Prepare("SELECT url, title, description, inserted_at FROM links ORDER BY inserted_at DESC")
@@ -66,34 +87,50 @@ func init() {
 	}
 }
 
-func PrintAll(w http.ResponseWriter, r *http.Request) {
+func ListAll() (links []Link, err error) {
 	rows, err := printAllQuery.Query()
+	defer rows.Close()
+	for rows.Next() {
+		var link Link
+		err = rows.Scan(&link.Url, &link.Title, &link.Description, &link.InsertedAt)
+		if err != nil {
+			return
+		}
+		link.ParsedUrl, _ = url.Parse(link.Url)
+		links = append(links, link)
+	}
+	return
+}
+
+func PrintAll(w http.ResponseWriter, r *http.Request) {
+	links, err := ListAll()
 	if err != nil {
 		log.Print("error when printing all: ", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprintln(w, "Internal server error")
 		return
 	}
-	defer rows.Close()
-	var links []Link
-	for rows.Next() {
-		var link Link
-		err = rows.Scan(&link.Url, &link.Title, &link.Description, &link.InsertedAt)
-		if err != nil {
-			log.Print("error when printing all: ", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprintln(w, "Internal server error")
-			return
-		}
-		link.ParsedUrl, _ = url.Parse(link.Url)
-		links = append(links, link)
-	}
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	err = printAllTpl.Execute(w, links)
+	log.Print(printAllTpl.Execute(w, links))
+}
+
+func FeedAll(w http.ResponseWriter, r *http.Request) {
+	links, err := ListAll()
+	if err != nil {
+		log.Print("error when printing all: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintln(w, "Internal server error")
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	log.Print(rssTemplate.Execute(w, links))
 }
 
 func init() {
 	http.HandleFunc("/", PrintAll)
+	http.HandleFunc("/feed.atom", FeedAll)
 }
