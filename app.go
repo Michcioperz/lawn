@@ -8,7 +8,7 @@ import (
 )
 
 var db = func() (d *sql.DB) {
-	d, err := sql.Open("postgres", "user=lawn dbname=lawn")
+	d, err := sql.Open("postgres", "user=lawn dbname=lawn host=/run/postgresql")
 	if err != nil {
 		log.Fatal("database didn't open right: ", err)
 	}
