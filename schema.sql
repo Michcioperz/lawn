@@ -1,0 +1,13 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE TABLE IF NOT EXISTS links (
+  url TEXT NOT NULL UNIQUE PRIMARY KEY,
+  title TEXT NULL,
+  description TEXT NULL,
+  inserted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS api_keys (
+  key UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NULL
+);
