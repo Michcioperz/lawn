@@ -59,7 +59,6 @@ var printAllTpl = template.Must(template.New("main").Parse(`
 `))
 
 var rssTemplate = template.Must(template.New("feed").Parse(`
-<?xml version="1.0" encoding="utf-8" ?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Lawn</title>
   <subtitle>a primitive bookmarking solution</subtitle>
@@ -127,6 +126,7 @@ func FeedAll(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/atom+xml; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
+  fmt.Fprintln(w, `<?xml version="1.0" encoding="utf-8" ?>`)
 	log.Print(rssTemplate.Execute(w, links))
 }
 
