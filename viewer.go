@@ -35,6 +35,7 @@ var printAllTpl = template.Must(template.New("main").Parse(`
         margin-right: auto;
       }
     </style>
+    <link rel="alternate" type="application/atom+xml" href="/feed.atom" />
   </head>
   <body>
     <div class="container">
