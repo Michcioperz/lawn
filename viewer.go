@@ -18,6 +18,18 @@ var printAllTpl = template.Must(template.New("main").Parse(`
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Lawn</title>
+    <style>
+      body {
+        background-color: #4F4040;
+        color: #EDD3D3;
+      }
+      .container {
+        width: 90%;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -32,6 +44,10 @@ var printAllTpl = template.Must(template.New("main").Parse(`
           {{ end }}
         </ul>
       </main>
+      <footer>
+        <p>This is <a href="https://git.meekchopp.es/Michcioperz/lawn">Lawn</a>, a public bookmark list by <a href="https://michcioperz.com">Michcioperz</a>.</p>
+        <p>This software is licensed AGPL v3.</p>
+      </footer>
     </div>
   </body>
 </html>
