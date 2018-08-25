@@ -75,7 +75,7 @@ var rssTemplate = template.Must(template.New("feed").Parse(`
     <updated>{{ .InsertedAtISO }}</updated>
     <summary>{{ .Description }}</title>
   </entry>
-  {{ end }
+  {{ end }}
 </feed>
 `))
 
