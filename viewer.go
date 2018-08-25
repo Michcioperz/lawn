@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 var printAllQuery *sql.Stmt
@@ -27,7 +28,7 @@ var printAllTpl = template.Must(template.New("main").Parse(`
       <main>
         <ul>
           {{ range . }}
-          <li><a href="{{ .Url }}">{{ .Title }}</a> {{ .Description }}</li>
+          <li><a href="{{ .Url }}">{{ .Title }} <small>{{ .ParsedUrl.Hostname() }}</small></a> {{ .Description }}</li>
           {{ end }}
         </ul>
       </main>
@@ -63,6 +64,7 @@ func PrintAll(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintln(w, "Internal server error")
 			return
 		}
+		link.ParsedUrl, _ = url.Parse(link.Url)
 		links = append(links, link)
 	}
 
