@@ -13,7 +13,7 @@ var nunuxInsertor *sql.Stmt
 
 func init() {
 	var err error
-	nunuxInsertor, err = db.Prepare("INSERT INTO links (url, title) VALUES (?, ?)")
+	nunuxInsertor, err = db.Prepare("INSERT INTO links (url, title) VALUES ($1, $2)")
 	if err != nil {
 		log.Fatal("error preparing nunux api's statement: ", err)
 	}
