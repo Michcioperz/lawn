@@ -70,3 +70,7 @@ func PrintAll(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	err = printAllTpl.Execute(w, links)
 }
+
+func init() {
+	http.HandleFunc("/", PrintAll)
+}
