@@ -41,14 +41,14 @@ var printAllTpl = template.Must(template.New("main").Parse(`
     <div class="container">
       <header>
         <h1>Lawn</h1>
-        <h3>a primitive bookmarking solution</h3>
+        <p>a primitive bookmarking solution</p>
       </header>
       <main>
-        <ul>
+        <ol>
           {{ range . }}
-          <li><a href="{{ .Url }}">{{ .Title }} <small>{{ .ParsedUrl.Hostname }}</small></a> {{ .Description }}</li>
+          <li><a href="{{ .Url }}">{{ .Title }} <small>({{ .ParsedUrl.Hostname }})</small></a> {{ .Description }}</li>
           {{ end }}
-        </ul>
+        </ol>
       </main>
       <footer>
         <p>This is <a href="https://git.meekchopp.es/Michcioperz/lawn">Lawn</a>, a public bookmark list by <a href="https://michcioperz.com">Michcioperz</a>.</p>
